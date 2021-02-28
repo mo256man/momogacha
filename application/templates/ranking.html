@@ -1,0 +1,52 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<title>桃鉄ガチャ</title>
+</head>
+<body>
+<div class="waku1 non-clickable">決算</div><br>
+<br>
+{% for record in hiscore %}
+<div class="waku1 non-clickable">
+&#x1f351;{{loop.index}}位　{{record["date"]}}　{{record["uname"]}}社長　{{record["kanji"]}}円<br>
+    <blockquote class="ranking"><img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">
+    <div id="p{{loop.index}}" style="display: none;">
+    <table>
+    {% for row in record["table"] %}
+    <tr><td>{{row[0]}}</td><td>{{row[1]}}</td><td align="right">{{row[2]}}</td></tr>
+    {% endfor %}
+    </table>
+    </div>
+    </blockquote>
+</div>
+{% endfor %}
+<br>
+<br>
+<a href="/main"><div class="waku1 clickable">戻る</div></a>
+<script>
+function clickBtn(btn){
+    const area = $("#p"+btn);
+    const img =  $("#b"+btn);
+
+    if (area.css("display")=="block") {
+        img.src = "static/plus.png";
+    } else {
+        img.src = "static/minus.png";
+    }
+    area.toggle();
+
+//    const area = document.getElementById("p"+btn);
+//    const img = document.getElementById("b"+btn)
+//    if(area.style.display=="block"){
+//        area.style.display ="none";
+//        img.src="static/plus.png";
+//    }else{
+//        area.style.display ="block";
+//        img.src="static/minus.png";
+//    }
+}
+</script>
+</body>
+</html>

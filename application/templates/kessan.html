@@ -1,0 +1,52 @@
+<html>
+<head>
+<link rel="stylesheet" href="static/style.css" type="text/css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+</head>
+<body class="body_kessan">
+<img id="kessan" class="kessan" src="../static/kessan.png">
+<img id="fujisan" src="../static/fujisan.png" style="margin-top: 200px;">
+<!-- 
+<div id="sodeL" class="sode"></div>
+<div id="sodeR" class="sode"></div>
+-->
+<div id="train" class="train"><img src="../static/train.png"></div>
+
+
+
+<script>
+let winW = window.innerWidth;
+let winH = window.innerHeight;
+let trainW = $("#train").width();
+let fujisanT = $("#fujisan").css("merginTop");
+let fujisanH = $("#fujisan").height();
+let trainH = fujisanT + fujisanH - 100;
+
+$("#kessan").delay(1500).queue(function(){
+    $(this).css({display:"block"}).dequeue();
+}).animate({t: 1},{
+    duration: 900,
+    step: function(t) {
+        $(this).css({transform:"scale(" + (20+80*t)/100 + ")"});
+        $(this).css({marginTop:(-800*(t-0.6)**2+200) + "px"});
+    }
+,}).animate({t: 10},{
+    duration: 100,
+    step: function(t) {
+        $(this).css({transform:"scale("+ (100-20*t*0.1)/100 +")"});
+    }
+,});
+$("#train").animate({t: 1},{
+    duration: 5000,
+    queue: false,
+    step: function(t) {
+        $(this).css({marginTop: trainH + "px"});
+        $(this).css({marginLeft: (1.2*winW*(1-t) - 1.2*(winW+trainW)*t) + "px"});
+    }
+});
+$('#train').fadeOut(6000,function(){
+    window.location.href = "/ranking";
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/style.css">
+<title>桃鉄ガチャ</title>
+</head>
+<body class="normal">
+<h2>桃鉄ガチャ</h1>
+<div class="blue">{{uname}}社長</div><br>
+<br>
+<div class="box_parent">
+    <div class="box_child waku1 non-clickable box_god">
+        <img src="static/god.png">    
+        　「汝に物件を３つ与えよう<br><br>
+        {% if items_left >= 3 %}
+        　　全{{items_cnt}}件中、残り{{items_left}}件だ」<br>
+        {% else %}
+        　　…と思ったが、もう品切れだ」<br>
+        {% endif %}
+    </div>
+</div>
+<br>
+<div class="box_parent">
+    {% if items_left >= 3 %}
+    <a href="/dice">
+    <div class="box_child waku1 clickable box_gatya">
+        <img src="static/dice.png">　サイコロを振ってください
+    </div>
+    </a>
+    {% else %}
+    <div class="box_child waku1 non-clickable box_gatya">
+        品切れです<br>
+        明日になればリセットされます<br>
+    </div>
+    {% endif %}
+
+    <a href="/kessan">
+        <div class="box_child waku1 clickable box_kessan">
+            <img src="static/soroban.png">　決算
+        </div>
+    </a>
+</div>
+<br>
+<a href="/main?reset=True" ><div class="waku1 clickable">リセット</div></a><br>
+<br>
+</body>
+</html>

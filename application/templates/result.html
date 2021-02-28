@@ -1,0 +1,35 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="/static/style.css">
+<title>桃鉄ガチャ</title>
+</head>
+<body class="normal">
+<h2>桃鉄ガチャ</h1>
+<div class="blue">{{uname}}社長</div><br>
+<br>
+<br>
+<div class="waku1 non-clickable">
+<table>
+    <tbody>
+        {% for row in result %}
+        <tr>
+            <td>{{ row[0] }}（{{ row[1] }}）</td>
+            <td>{{ row[2] }}</td>
+            <td align="right">{{ row[3] }}</td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td class="sum" align="middle">計</td>
+            <td class="sum"></td>
+            <td class="sum" align="right">{{ score }}円</td>
+        </tr>
+    </tbody>
+</table>
+</div>
+<br>
+<br>
+<br>
+<a href="/main"><div class="waku1 clickable">戻る</div></a>
+</body>
+</html>

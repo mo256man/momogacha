@@ -1,0 +1,31 @@
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<style type="text/css">
+<!--
+div.box {
+    background-color: orange;
+    height: 200px;
+    width: 200px;
+}
+-->
+</style>
+</head>
+<div id="box" class="box"></div>
+<br>
+<script>
+$("#box").animate({paddingRight: 1},{
+    duration: 5000,
+    queue: false,
+    step: function(now){
+        $(this).css({transform:"scale(" + (3+now)/4  + ")"});
+//        $(this).css({"marginTop" : 500 * now + "px"});
+// ↑でも可。
+    }
+,});
+
+$("#box").animate({"marginTop": "500px"},{queue: true, duration: 2000})
+         .animate({"marginLeft": "300px"},{queue: true, duration: 3000});
+</script>
+</body>
+</html>

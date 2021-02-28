@@ -1,0 +1,227 @@
+@import url('https://fonts.googleapis.com/css2?family=Kosugi+Maru&display=swap');
+
+body{
+  background: url("nihonchizu_area.png") center center / cover no-repeat fixed;
+  font-family: 'Kosugi Maru', sans-serif;
+  font-weight: bold;
+  width: 1024px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 2em;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+}
+
+body.normal{
+  background: url("nihonchizu_area.png") center center / cover no-repeat fixed;
+}
+
+body.body_kessan{
+  background-color: white;
+//  background: url("fujisan.png") center center / auto no-repeat fixed;
+}
+
+td.waku {
+  border: 5px solid rgb(170,145,120);
+  border-radius: 10px;
+  margin-right: 10px;
+  color : rgb(16, 16, 16);
+  padding: 10px;
+  vertical-align: text-top;
+  display: inline-block;
+}
+
+th, td{
+  font-family: 'Kosugi Maru', sans-serif;
+  font-weight: bold;
+  font-size: 2em;
+  padding: 2px 10px; 
+}
+
+td.sum {
+  border-top: solid 2px black;
+}
+
+td>input.showbtn {
+  font-size: 1em;
+}
+
+input, button {
+  font-family: 'Kosugi Maru', sans-serif;
+  font-size: 1em;
+}
+
+a { text-decoration: none;
+}
+
+.h150 {
+  height: 150px;
+}
+.waku1 {
+    border: 5px solid rgb(170,145,120);
+    border-radius: 10px;
+    margin-right: 10px;
+    color : rgb(16, 16, 16);
+    padding: 10px;
+    vertical-align: text-top;
+    display: inline-block;
+}
+
+.cell-link {
+	padding: 0;
+}
+
+.cell-link a{
+	height: 100%;
+	padding: 2px 5px;
+	display: flex;
+	align-items: center;
+}
+
+div.right {
+  text-align: right;
+  margin-left:auto;
+}
+
+
+div.sizefix{
+  width: 900px;
+  height: 150px;
+}
+
+div.w400 {
+  width: 400px;
+}
+
+div.right {
+  display: inline;
+  text-align: right;  
+}
+
+div.left {
+  display: inline;
+  text-align: left;  
+}
+
+div.clickable, input.clickable, td.clickable{
+  position: relative;
+  background-color: rgba(255,128,0,0.5);
+}
+
+div.clickable a{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height:100%;
+  width: 100%;
+  background-color: rgba(255,128,0,0.5);
+}
+
+div.non-clickable, td.non-clickable{
+  position: relative;
+  background-color: rgba(255,255,255,0.9);
+}
+
+div.blue {
+  border-top: 5px solid rgb(10,70,160);
+  border-left: 5px solid rgb(10,70,160);
+  border-right: 5px solid rgb(10,70,160);
+  border-bottom: 10px solid rgb(10,70,160);
+  background-color: rgb(0,120,255);
+  color:white;
+  border-radius: 10px;
+  margin-right: 10px;
+  padding: 10px;
+  display: inline-block;
+}
+
+.blue>input {
+  background-color: rgb(0,90,190);
+  color:white;
+  border-radius: 10px;
+}
+
+img {
+  float: left;
+}
+
+
+.dote {
+  image-rendering: pixelated;
+  image-rendering: -webkit-crisp-edges;
+  image-rendering: -moz-crisp-edges;
+  -ms-interpolation-mode: nearest-neighbor;
+}
+
+.center {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.kessan{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  z-index: 99;
+  display: none;
+}
+
+.box_parent {
+  display: flex;
+  justify-content: space-between;
+  border: 0px;
+  padding: 0px;
+  margin: 0px;
+  width: 1000px;
+}
+
+.box_child {
+  vertical-align: top;
+  text-align: left;
+  padding: 5px;
+}
+
+.box_god {
+  width: 1000px;
+  height: 150px;
+}
+
+.box_gatya {
+  width: 600px;
+  height: 150px;
+}
+
+.box_kessan {
+  width: 300px;
+  height: 150px;
+}
+
+.sode {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  background-color: white;
+  height: 100px;
+  width: 100px;
+  position: fixed;
+  z-index: 9;
+}
+
+.train {
+  position: fixed;
+}
+
+blockquote.table {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+}
