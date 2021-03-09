@@ -175,15 +175,7 @@ def handle_message(event):
             db.session.commit()
             kanji = my_function.num2kanji(score)
 
-            name = profile.display_name
-            random_cnt = int(len(name)*0.5)
-            for i in range(random_cnt):
-                pos = random.randint(1,len(name))
-                if name[pos-1]!="＊":
-                    name = name.replace(name[:pos],name[:pos-1]+"＊")
-                else:
-                    i -= 1
-
+            name = profile.display_name[0]*2+"社長"
             payload = my_flexmsg.get_payload(name, kanji, items)
         line_bot_api.reply_message(
             event.reply_token,
