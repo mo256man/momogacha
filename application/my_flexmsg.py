@@ -15,7 +15,7 @@ def get_payload(name, score, item_list):
     "contents": [
       {
         "type": "text",
-        "text": name+"社長",
+        "text": name,
         "weight": "bold",
         "size": "xl"
       },
@@ -155,37 +155,6 @@ def get_payload(name, score, item_list):
             ]
           }
         ]
-      },
-      {
-        "type": "separator",
-        "margin": "md",
-        "color": "#808080"
-      },
-      {
-        "type": "box",
-        "layout": "vertical",
-        "contents": [
-          {
-            "type": "box",
-            "layout": "horizontal",
-            "contents": [
-              {
-                "type": "text",
-                "text": "決算",
-                "color": "#FF0000",
-                "size": "lg"
-              },
-              {
-                "type": "text",
-                "text": "1位／全100件",
-                "color": "#000000",
-                "align": "end",
-                "size": "lg"
-              }
-            ]
-          }
-        ],
-        "margin": "lg"
       }
     ]
   }
