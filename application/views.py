@@ -175,7 +175,7 @@ def handle_message(event):
             db.session.commit()
             kanji = my_function.num2kanji(score)
 
-            name = profile.display_name[0]*2+"たろ社長"
+            name = profile.display_name[0] + profile.display_name[-1] +"たろ社長"
             payload = my_flexmsg.get_payload(name, kanji, items)
         line_bot_api.reply_message(
             event.reply_token,
