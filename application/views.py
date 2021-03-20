@@ -2,11 +2,12 @@ from flask import request, redirect, url_for, render_template, flash
 from flask import make_response, send_from_directory
 from sqlalchemy.sql.expression import func
 
+import application
 from application import app, db
-from application.models import Items
 import application.my_function as my_function
 import application.my_flexmsg as my_flexmsg
 import application.my_line as my_line
+
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import MessageEvent, TextMessage, TextSendMessage, FlexSendMessage
@@ -44,37 +45,27 @@ def register_name():
 # メイン
 @app.route("/main", methods=["GET", "POST"])
 def menu():
-    last_day = 0
-
-    if request.method == "GET":
-        if request.args.get("reset"):
-            items =  db.session.query(Items).filter(Items.done==1).all()
-            for item in items:
-                item.done = 0
-            db.session.commit()
-        elif request.args.get("return")=="True":
-            with counter.get_lock():
-                counter.value += 1
-    else:
-        pass
-
     uname = request.cookies.get("momoname")
-#    cnt = counter.value
-    today = datetime.datetime.today().day
-    if today != last_day:
-        items =  db.session.query(Items).filter(Items.done==1).all()
-        for item in items:
-            item.done = 0
-        db.session.commit()
-    last_day = today
-    items_cnt = db.session.query(Items).count()
-    items_left = db.session.query(Items).filter(Items.done==0).count()
+    last_date = application.get_last_date()
+    
+    if request.method == 'GET':
+        if request.args.get("resetItems", ""):
+            application.resetItems()  
+        if request.args.get("resetScore", ""):
+            application.resetScore()  
+    
+    today = my_function.getStrDate()
+    if today != last_date:
+        application.resetItems()
+    last_date = today
+
+    items_cnt = application.count_all_items()
+    items_left = application.count_valid_items()
 
     return render_template("main.html" ,
                              uname=uname, 
                              items_cnt=items_cnt, items_left=items_left,
-                             today=today, last_day=last_day,
-                             cnt = "cnt")
+                             today=today, last_day=last_date)
 
 
 # ダイスを振る（デモ）
@@ -82,34 +73,13 @@ def menu():
 def dice():
     return render_template("dice.html")
 
-# ガチャ
+# webでガチャ
 @app.route("/gatya", methods=["GET", "POST"])
 def gatya():
-    global cnt, all_results
-    uname = request.cookies.get("momoname")
-    dt = datetime.datetime.now().strftime("%Y/%m/%d")
-
-    # 実行直前にもう一度物件数を確認する
-    items_left = db.session.query(Items).filter(Items.done==False).count()
-    if items_left < 3:
-        return render_template("sorry.html")
-
-    score = 0
-    items = []
-    for i in range(3):
-        item =  db.session.query(Items).filter(Items.done==False).order_by(func.random()).first()
-        price = my_function.kanji2num(item.kanji)
-        item.done = 1
-        items.append([item.station, item.ken, item.item, item.kanji, item.id])
-        score += price
-    db.session.commit()
-
-    items.sort(key=lambda x: x[4])
-    kanji = my_function.num2kanji(score)
-
-    return render_template("result.html", uname=uname, result=items, score=kanji)
-
-
+    name = request.cookies.get("momoname")
+    uname = name + "社長"
+    kanji, result = application.do_gacha(name, uname, isLINE=False)
+    return render_template("result.html", uname=uname, result=result, score=kanji)
 
 # 決算（富士山デモ）
 @app.route("/kessan")
@@ -120,9 +90,8 @@ def kessan():
 # 決算（ランキング）
 @app.route("/ranking", methods=["GET", "POST"])
 def ranking():
-    global df_items, all_results
-    hiscore = sorted(all_results, key=lambda x:x["score"])[::-1][:3]
-    return render_template("ranking.html", hiscore=hiscore)
+    results = application.get_scores()
+    return render_template("ranking.html", results=results)
 
 # LINEのプロファイルを取得する
 def get_profile(self, user_id, timeout=None):
@@ -131,7 +100,7 @@ def get_profile(self, user_id, timeout=None):
         timeout=timeout)
     return Profile.new_from_json_dict(response.json)
 
-
+# LINEコールバック
 @app.route("/callback", methods=['POST'])
 def callback():
     signature = request.headers['X-Line-Signature']
@@ -145,64 +114,31 @@ def callback():
         abort(400)
     return 'OK'
 
-# LINEでガチャをおこなう
+# LINEでコマンドを受ける
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     id = event.source.user_id   #LINEのユーザーIDの取得
+    profile = line_bot_api.get_profile(id)
+    name = profile.display_name
+    uname = name[0] + name[-1] +"たろ社長"
     txt = event.message.text
     if txt == "ガチャ！":
-    #    today = datetime.datetime.now().strftime("%Y/%m/%d")
-        profile = line_bot_api.get_profile(id)
-        print (profile)
-        # 日付更新を確認する
-    #    if today != last_day:
-    #       df_items["done"] = False
-    #   last_day = today
-        
-        # 残物件数を確認する
-        items_left = db.session.query(Items).filter(Items.done==False).count()
+        items_left = application.count_valid_items()        
         if items_left < 3:
             payload = my_flexmsg.noItems()
         else:
-            score = 0
-            items = []
-            for i in range(3):
-                item =  db.session.query(Items).filter(Items.done==False).order_by(func.random()).first()
-                price = my_function.kanji2num(item.kanji)
-                item.done = 1
-                items.append([item.station, item.ken, item.item, item.kanji, item.id])
-                score += price
-            db.session.commit()
-            kanji = my_function.num2kanji(score)
+            kanji, result = application.do_gacha(name, uname, isLINE=True)
+            payload = my_flexmsg.get_result(uname, kanji, result)
 
-            name = profile.display_name[0] + profile.display_name[-1] +"たろ社長"
-            payload = my_flexmsg.get_payload(name, kanji, items)
         line_bot_api.reply_message(
             event.reply_token,
             TextSendMessage(text=f"残り {items_left}"))
     elif txt == "決算！":
-        payload = my_flexmsg.kessan()        
-    
+        results = application.get_scores()
+        payload = my_flexmsg.get_results(results)
     else:
         payload = my_flexmsg.elsemsg()        
 
     container_obj = FlexSendMessage.new_from_json_dict(payload)
     line_bot_api.push_message(id, messages=container_obj)
 
-
-
-# ガチャの本番
-def do_gatya():
-    score = 0
-    items = []
-    for i in range(3):
-        item =  db.session.query(Items).filter(Items.done==False).order_by(func.random()).first()
-        price = my_function.kanji2num(item.kanji)
-        item.done = 1
-        items.append([item.station, item.ken, item.item, item.kanji, item.id])
-        score += price
-        db.session.commit()
-
-    items.sort(key=lambda x: x[4])
-    kanji = my_function.num2kanji(score)
-    return score, kanji, items

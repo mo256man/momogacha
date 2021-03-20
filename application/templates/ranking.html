@@ -8,18 +8,20 @@
 <body>
 <div class="waku1 non-clickable">決算</div><br>
 <br>
-{% for record in hiscore %}
-<div class="waku1 non-clickable">
-&#x1f351;{{loop.index}}位　{{record["date"]}}　{{record["uname"]}}社長　{{record["kanji"]}}円<br>
-    <blockquote class="ranking"><img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">
-    <div id="p{{loop.index}}" style="display: none;">
-    <table>
-    {% for row in record["table"] %}
-    <tr><td>{{row[0]}}</td><td>{{row[1]}}</td><td align="right">{{row[2]}}</td></tr>
-    {% endfor %}
-    </table>
-    </div>
-    </blockquote>
+{% for record in results %}
+<div class="waku_ranking non-clickable">
+<p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}　{{record["date"]}}</p>
+<p class="score">{{record["kanji"]}}円</p><p></p>
+<blockquote class="ranking">
+<img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">
+<div id="p{{loop.index}}" style="display: none;">
+<table>
+{% for row in record["table"] %}
+<tr><td class="ranking item">{{row[0]}}</td><td class="ranking station">{{row[1]}}（{{row[2]}}）</td><td class="ranking kanji">{{row[3]}}</td></tr>
+{% endfor %}
+</table>
+</div>
+</blockquote>
 </div>
 {% endfor %}
 <br>

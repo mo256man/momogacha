@@ -14,5 +14,17 @@ class Items(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     done = db.Column(db.Integer)
 
+class Score(db.Model):
+    __tablename__ = "score"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    uname = db.Column(db.String)
+    score = db.Column(db.Integer)
+    item1 = db.Column(db.Integer)
+    item2 = db.Column(db.Integer)
+    item3 = db.Column(db.Integer)
+    date = db.Column(db.String)
+
 def init():
     db.create_all()
+
