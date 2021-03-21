@@ -113,6 +113,7 @@ def get_scores(isDaily):
     results = []
     scores = db.session.query(Scores)
     if isDaily:
+        today = my_function.getStrDate()
         topdata = scores.filter(Scores.date==today).order_by(Scores.score.desc()).limit(5).all()
     else:
         topdata = scores.order_by(Scores.score.desc()).limit(5).all()
