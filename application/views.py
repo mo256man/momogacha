@@ -44,7 +44,7 @@ def register_name():
     uname = name + "社長"
     today = my_function.getStrDate()
     last_date = application.get_last_date()
-    if today ! = last_date:
+    if today  != last_date:
         application.resetItems()
     items_cnt = application.count_all_items()
     items_left = application.count_valid_items()
@@ -60,7 +60,7 @@ def menu():
     uname = name + "社長"
     last_date = application.get_last_date()
     today = my_function.getStrDate()
-    if today ! = last_date:
+    if today  != last_date:
         application.resetItems()
     
     if request.method == 'GET':
