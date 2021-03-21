@@ -17,7 +17,6 @@ class Items(db.Model):
     __tablename__ = "item"
     item = db.Column(db.String(32))
     kanji = db.Column(db.String(32))
-    area = db.Column(db.String(32))
     ken = db.Column(db.String(32))
     station = db.Column(db.String(32))
     id = db.Column(db.Integer, primary_key=True)
@@ -47,9 +46,8 @@ def resetItems():
     db.session.commit()
 
 def resetScore():
+    db.session.query(Scores).filter(Scores.id>0).delete()
     date = my_function.getStrDate()
-    scores_real = db.session.query(Scores).filter(Scores.id>0)
-    scores_real.delete()
     scores = db.session.query(Scores).all()
     for score in scores:
         score.date = date
@@ -111,10 +109,14 @@ def id2item(id):
     result = [item.item, item.station, item.ken, item.kanji, item.id]
     return result
 
-def get_scores():
+def get_scores(isDaily):
     results = []
-    # topdata = db.session.query(Scores).order_by(Scores.score.desc()).limit(5).all()
-    topdata = db.session.query(Scores).order_by(Scores.score.desc()).limit(5).all()
+    scores = db.session.query(Scores)
+    if isDaily:
+        topdata = scores.filter(Scores.date==today).order_by(Scores.score.desc()).limit(5).all()
+    else:
+        topdata = scores.order_by(Scores.score.desc()).limit(5).all()
+
     for data in topdata:
         result = {}
         result["name"] = data.name

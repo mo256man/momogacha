@@ -10,7 +10,7 @@
 <br>
 {% for record in results %}
 <div class="waku_ranking non-clickable">
-<p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}　{{record["date"]}}</p>
+<p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}</p>
 <p class="score">{{record["kanji"]}}円</p><p></p>
 <blockquote class="ranking">
 <img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">

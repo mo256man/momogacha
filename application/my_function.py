@@ -46,7 +46,6 @@ def kanji2num(kanji):
 
 # 日付を文字列として取得する
 def getStrDate():
-  #  return datetime.datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     return datetime.datetime.now().strftime("%Y/%m/%d")
 
 if __name__ == "__main__":
