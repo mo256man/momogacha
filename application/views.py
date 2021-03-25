@@ -27,48 +27,35 @@ def favicon():
 # タイトル
 @app.route("/", methods = ["GET", "POST"])
 def title():
-    global name
     name = request.cookies.get("momoname")
     if (name is None) or (name == ""):
         name = random.choice(["ももたろ", "きんたろ", "うらしま", "やしゃ"])
     return render_template("index.html", name = name)
 
-# 名前変更
 @app.route("/register_name", methods = ["GET", "POST"])
 def register_name():
-    global name
+    name = request.cookies.get("momoname")
     if request.method == "POST":
+        redirext = 1
+        max_age = 60 * 60 * 24 * 7 # 7 days
+        expires = int(datetime.datetime.now().timestamp()) + max_age
         name = request.form["name"]
-        response = make_response(render_template("index.html", name = name))
-        response.set_cookie(key = "momoname", value = name)
-    uname = name + "社長"
-    today = my_function.getStrDate()
-    last_date = application.get_last_date()
-    if today  != last_date:
-        application.resetItems()
-    items_cnt = application.count_all_items()
-    items_left = application.count_valid_items()
-    return render_template("main.html" ,
-                             uname = uname, 
-                             items_cnt = items_cnt, items_left = items_left,
-                             today = today, last_day = last_date)
+    else:
+        redirext = 0
+    response = redirect(url_for("menu"))
+    response.set_cookie(key = "momoname", value = name)
+    return response
 
 # メイン
-@app.route("/main", methods = ["GET", "POST"])
+@app.route("/main")
 def menu():
-    global name
+    name = request.cookies.get("momoname")
     uname = name + "社長"
     last_date = application.get_last_date()
     today = my_function.getStrDate()
-    if today  != last_date:
+    if today != last_date:
         application.resetItems()
-    
-    if request.method == 'GET':
-        if request.args.get("resetItems", ""):
-            application.resetItems()  
-        if request.args.get("resetScore", ""):
-            application.resetScore()  
-    
+        application.refreshScore()
     items_cnt = application.count_all_items()
     items_left = application.count_valid_items()
 
@@ -77,19 +64,33 @@ def menu():
                              items_cnt = items_cnt, items_left = items_left,
                              today = today, last_day = last_date)
 
+# アイテムを非選択状態に戻す
+@app.route("/reset_items")
+def reset_items():
+    application.resetItems()
+    return redirect(url_for("menu"))
+
+# ランキングを初期化する
+@app.route("/reset_score")
+def reset_score():
+    application.resetScore()
+    return redirect(url_for("menu"))
 
 # ダイスを振る（デモ）
-@app.route("/dice", methods = ["GET", "POST"])
+@app.route("/dice")
 def dice():
     return render_template("dice.html")
 
 # webでガチャ
-@app.route("/gatya", methods = ["GET", "POST"])
-def gatya():
-    global name
+@app.route("/gacha")
+def gacha():
+    name = request.cookies.get("momoname")
     uname = name + "社長"
     kanji, result = application.do_gacha(name, uname, isLINE = False)
-    return render_template("result.html", uname = uname, result = result, score = kanji)
+    # rank = application.get_rank()
+    tweet_msg = my_function.get_tweet_msg(kanji, uname, result)
+    return render_template("result.html", uname = uname, result = result, score = kanji ,tw_text = tweet_msg)
+
 
 # 決算（富士山デモ）
 @app.route("/kessan")
@@ -100,8 +101,12 @@ def kessan():
 # 決算（ランキング）
 @app.route("/ranking", methods = ["GET", "POST"])
 def ranking():
-    results = application.get_scores(isDaily = True)
-    return render_template("ranking.html", results = results)
+    if request.method == "GET":
+        isDaily = 1 if request.args.get("daily") == "True" else 0
+    name = request.cookies.get("momoname")
+    uname = name + "社長"
+    results = application.get_scores(isDaily = isDaily)
+    return render_template("ranking.html", uname = uname, results = results, isDaily = isDaily)
 
 # LINEのプロファイルを取得する
 def get_profile(self, user_id, timeout = None):
@@ -136,13 +141,15 @@ def handle_message(event):
             payload = my_flexmsg.noItems()
         else:
             kanji, result = application.do_gacha(name, uname, isLINE = True)
-            payload = my_flexmsg.get_result(uname, kanji, result)
+            payload = my_flexmsg.get_result(uname, kanji, result, isRanking=False)
+            
+            rank = application.get_rank()
         msg = f"残り {items_left}"
 
     elif txt == "決算！":
         isDaily = random.choice([True, False])
         results = application.get_scores(isDaily = isDaily)
-        payload = my_flexmsg.get_results(results)
+        payload = my_flexmsg.get_results(results, isRanking=True)
         msg = "決算【デイリー】" if isDaily else "決算【通期】"
         
     else:

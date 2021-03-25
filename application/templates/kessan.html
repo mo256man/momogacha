@@ -15,6 +15,13 @@
 
 
 <script>
+//これ、動かない
+$(document).ready(function(){
+    $("#body_kessan").click(function() {
+        window.location.href = "/ranking?daily=False";
+    });
+});
+
 let winW = window.innerWidth;
 let winH = window.innerHeight;
 let trainW = $("#train").width();
@@ -45,7 +52,7 @@ $("#train").animate({t: 1},{
     }
 });
 $('#train').fadeOut(6000,function(){
-    window.location.href = "/ranking";
+    window.location.href = "/ranking?daily=True";
 });
 </script>
 </body>

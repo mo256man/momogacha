@@ -1,3 +1,5 @@
+import application.my_function as my_function
+
 def get_contents_item(item):
   contents_item = {
     "type": "box",
@@ -27,7 +29,67 @@ def get_contents_score(item):
       "align": "end"}]}
   return contents_score      
 
-def get_dict_body(name, kanji, item_list):
+def get_dict_link(name, kanji, result):
+  
+  tweet_msg = my_function.get_tweet_msg(kanji, name, result)
+  tweet_url = "https://twitter.com/intent/tweet?text=" + tweet_msg
+  """
+  dict_link = {
+    "type": "box",
+    "layout": "horizontal",
+    "contents": [{
+      "type": "text",
+      "text": "ツイート",
+      "color": "#111111",
+      "flex": 0,
+      "size": "lg",
+      "action": {
+        "type": "uri",
+        "label": "action",
+        "uri": tweet_url
+      }}]}
+
+  """
+  dict_link = {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [{
+      "type": "filler"
+    },{
+      "type": "box",
+      "layout": "baseline",
+      "contents": [{
+        "type": "filler"
+      },{
+        "type": "text",
+        "text": "Tweet!",
+        "color": "#ffffff",
+        "flex": 0,
+        "offsetTop": "-2px",
+        "align": "center"
+      },{
+        "type": "filler"
+      }],
+      "spacing": "sm",
+      "action": {
+        "type": "uri",
+        "label": "action",
+        "uri": tweet_url
+      }
+    },{
+      "type": "filler"
+      }],
+      "borderWidth": "1px",
+      "cornerRadius": "4px",
+      "spacing": "sm",
+      "borderColor": "#ffffff",
+      "margin": "xxl",
+      "height": "40px"
+    }
+
+  return dict_link
+
+def get_dict_body(name, kanji, item_list, isRanking):
   dict_name = {
     "type": "text",
     "text": name,
@@ -60,6 +122,17 @@ def get_dict_body(name, kanji, item_list):
         "contents": [content_item, content_score]
       })
 
+  contents = [dict_name,
+              dict_score,
+              dict_separator,
+              dict_contents[0],
+              dict_contents[1],
+              dict_contents[2]]
+
+  if not isRanking:
+    dict_link = get_dict_link(name, kanji, item_list)
+    contents.append(dict_link)
+
   dict_body = {
     "type": "box",
     "layout": "vertical",
@@ -68,19 +141,13 @@ def get_dict_body(name, kanji, item_list):
       "angle": "0deg",
       "startColor": "#ff8888",
       "endColor": "#ffffff"},
-    "contents": [
-      dict_name,
-      dict_score,
-      dict_separator,
-      dict_contents[0],
-      dict_contents[1],
-      dict_contents[2]]
+    "contents": contents
    }
   return dict_body
 
 
-def get_result(name, score, item_list):
-  dict_body = get_dict_body(name, score, item_list)    
+def get_result(name, score, item_list, isRanking):
+  dict_body = get_dict_body(name, score, item_list, isRanking)    
   payload = {
     "type": "flex",
     "altText": "Flex Message",
@@ -91,10 +158,10 @@ def get_result(name, score, item_list):
   }
   return payload
 
-def get_results(results):
+def get_results(results, isRanking):
   dict_bodies = []    
   for result in results:
-    dict_body = get_dict_body(result["uname"], result["kanji"], result["table"])
+    dict_body = get_dict_body(result["uname"], result["kanji"], result["table"], isRanking)
     dict_bodies.append(dict_body)
   payload = {
     "type": "flex",

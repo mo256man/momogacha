@@ -1,5 +1,6 @@
 import math
 import datetime
+import urllib.parse
 
 # 数値を漢字にする　面倒なので0は特別扱い
 def num2kanji(number):
@@ -47,6 +48,27 @@ def kanji2num(kanji):
 # 日付を文字列として取得する
 def getStrDate():
     return datetime.datetime.now().strftime("%Y/%m/%d")
+
+# 半角数字を全角にする力業
+# 参考　https://qiita.com/YuukiMiyoshi/items/6ce77bf402a29a99f1bf
+def han2zen(txt):
+    return txt.translate(str.maketrans({chr(0x0021 + i): chr(0xFF01 + i) for i in range(94)}))
+
+# Twitter用の文を作成する
+def get_tweet_msg(kanji, uname, result):
+    tmp = [han2zen(kanji)+"円"]
+    for row in result:
+        tmp.append(han2zen(row[3]))
+    max_len = max(len(x) for x in tmp)
+    tweet_msg = f"#桃鉄ガチャ　　{uname}\n"
+    tweet_msg += "【スコア　　"
+    tweet_msg += "　" * (max_len-len(tmp[0])) + tmp[0] + "】\n\n"
+    for i in [1,2,3]:
+        tweet_msg += f"{result[i-1][0]}（{result[i-1][1]}）\n"
+        tweet_msg +=  "　" * (max_len-len(tmp[i]) + 6) + tmp[i] + "\n"
+
+    tweet_msg = urllib.parse.quote(tweet_msg)
+    return tweet_msg
 
 if __name__ == "__main__":
     pass

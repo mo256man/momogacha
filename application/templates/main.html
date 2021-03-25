@@ -5,18 +5,28 @@
 <title>桃鉄ガチャ</title>
 </head>
 <body class="normal">
-<h2>桃鉄ガチャ</h1>
-<div class="blue">{{uname}}</div><br>
-<br>
+<h1>桃鉄ガチャ</h1><br>
+<div>
+    <div style="float: left">
+        <div class="blue">{{uname}}</div>
+    </div>
+    <div style="text-align: right">
+    </div>
+</div>
+<br><br><br>
 <div class="box_parent">
-    <div class="box_child waku1 non-clickable box_god">
-        <img src="static/god.png">    
-        　「汝に物件を３つ与えよう<br><br>
+    <div class="waku1 non-clickable box_god">
+        <table>
+        <tr><td rowspan="4"><img src="static/god.png"></td>
+        <td>ゴッドカード</td</tr>
+        <tr><td> 「汝に物件を３つ与えよう</td</tr>
         {% if items_left >= 3 %}
-        　　全{{items_cnt}}件中、残り{{items_left}}件だ」<br>
+        <tr><td>　　全{{items_cnt}}件中、残り{{items_left}}件だ」</td</tr>
         {% else %}
-        　　…と思ったが、もう品切れだ」<br>
+        <tr><td>　　…と思ったが、もう品切れだ」</td</tr>
         {% endif %}
+        <tr><td class="sum_dummy">　</td</tr>
+        </table>
     </div>
 </div>
 <br>
@@ -24,25 +34,27 @@
     {% if items_left >= 3 %}
     <a href="/dice">
     <div class="box_child waku1 clickable box_gatya">
-        <img src="static/dice.png">　サイコロを振ってください
+        <img src="static/dice.png"><br>
+        　サイコロを振ってください
     </div>
     </a>
     {% else %}
     <div class="box_child waku1 non-clickable box_gatya">
-        品切れです<br>
-        明日になればリセットされます<br>
+        <img src="static/ekiin.png"><br>
+        　品切れです<br>
+        　明日になればリセットされます<br>
     </div>
     {% endif %}
 
     <a href="/kessan">
         <div class="box_child waku1 clickable box_kessan">
-            <img src="static/soroban.png">　決算
+            <img src="static/soroban.png"><br>　決算
         </div>
     </a>
 </div>
 <br>
-<a href="/main?resetItems=True" ><div class="waku1 clickable">DBリセット</div></a><br>
-<a href="/main?resetScore=True" ><div class="waku1 clickable">ランキングリセット</div></a><br>
+<a href="/reset_items"><div class="waku1 clickable">物件リセット</div></a><br>
+<a href="/reset_score"><div class="waku1 clickable">ランキングリセット</div></a><br>
 <br>
 </body>
 </html>

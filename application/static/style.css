@@ -23,7 +23,7 @@ body.normal{
 
 body.body_kessan{
   background-color: white;
-//  background: url("fujisan.png") center center / auto no-repeat fixed;
+  background: url("fujisan.png") center center / auto no-repeat fixed;
 }
 
 td.waku {
@@ -52,6 +52,10 @@ td.sum {
   border-top: solid 2px black;
 }
 
+td.sum_dummy {
+  border-top: solid 2px rgba(0, 0, 0,0);
+}
+
 td>input.showbtn {
   font-size: 1em;
 }
@@ -78,8 +82,19 @@ a { text-decoration: none;
   display: inline-block;
 }
 
+.waku2 {
+  border: 5px solid rgb(29,155,240);
+  background-color: rgb(29,155,240);
+  border-radius: 10px;
+  margin-right: 10px;
+  color : rgb(242, 242, 242);
+  padding: 10px;
+  vertical-align: text-top;
+  display: inline-block;
+}
+
 .waku_ranking {
-  width: 1100px;
+  width: 1000px;
   border: 5px solid rgb(170,145,120);
   border-radius: 10px;
   margin-right: 10px;
@@ -144,16 +159,21 @@ div.non-clickable, td.non-clickable{
   background-color: rgba(255,255,255,0.9);
 }
 
-div.blue {
-  border-top: 5px solid rgb(10,70,160);
-  border-left: 5px solid rgb(10,70,160);
-  border-right: 5px solid rgb(10,70,160);
-  border-bottom: 10px solid rgb(10,70,160);
+.selected{
+  position: relative;
+  font-size: 1.5em;
+  background-color: rgb(138, 240, 55);
+  pointer-events: none;
+}
+
+.blue {
+  border: 5px solid rgb(10,70,160);
   background-color: rgb(0,120,255);
   color:white;
   border-radius: 10px;
   margin-right: 10px;
   padding: 10px;
+  vertical-align: text-top;
   display: inline-block;
 }
 
@@ -166,7 +186,6 @@ div.blue {
 img {
   float: left;
 }
-
 
 .dote {
   image-rendering: pixelated;
@@ -202,7 +221,7 @@ img {
   border: 0px;
   padding: 0px;
   margin: 0px;
-  width: 1000px;
+  width: 100%;
 }
 
 .box_child {
@@ -212,12 +231,11 @@ img {
 }
 
 .box_god {
-  width: 1000px;
-  height: 150px;
+  width: 100%;
 }
 
 .box_gatya {
-  width: 600px;
+  width: 650px;
   height: 150px;
 }
 
@@ -247,11 +265,11 @@ blockquote.ranking {
 }
 
 td.item {
-  width: 500px;
+  width: 400px;
 }
 
 td.station {
-  width: 600px;
+  width: 400px;
 }
 
 td.kanji {
@@ -268,4 +286,10 @@ td.kanji {
 .score {
   margin:10px 10px;
   text-align: right;
+}
+
+.twitter {
+  text-align: center;
+  padding-top: 1em;
+  padding-bottom: 1em;
 }

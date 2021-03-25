@@ -5,31 +5,49 @@
 <title>桃鉄ガチャ</title>
 </head>
 <body class="normal">
-<h2>桃鉄ガチャ</h1>
-<div class="blue">{{uname}}</div><br>
-<br>
-<br>
-<div class="waku1 non-clickable">
-<table>
-    <tbody>
-        {% for row in result %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}（{{ row[2] }}）</td>
-            <td align="right">{{ row[3] }}</td>
-        </tr>
-        {% endfor %}
-        <tr>
-            <td class="sum" align="middle">計</td>
-            <td class="sum"></td>
-            <td class="sum" align="right">{{ score }}円</td>
-        </tr>
-    </tbody>
-</table>
+<h1>桃鉄ガチャ</h1><br>
+<div>
+    <div style="float: left">
+        <div class="blue">{{uname}}</div>
+        <a href="http://twitter.com/share?text={{tw_text}}&url=https://momogacha.herokuapp.com/" rel="nofollow" target="_blank"><div class="waku2">Tweet</div></a>
+    </div>
+    <div style="text-align: right">
+    </div>
+</div>
+<br><br><br>
+<div class="box_parent">
+    <div class="waku1 non-clickable box_god">
+        <table>
+            <tbody>
+                {% for row in result %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}（{{ row[2] }}）</td>
+                    <td align="right">{{ row[3] }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td class="sum" align="middle">計</td>
+                    <td class="sum"></td>
+                    <td class="sum" align="right">{{ score }}円</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 <br>
+<div class="box_parent">
+    <a href="/main">
+    <div class="box_child waku1 clickable box_gatya">
+        <img src="static/return.png"><br>　戻る
+    </div>
+    </a>
+    <a href="/kessan">
+        <div class="box_child waku1 clickable box_kessan">
+            <img src="static/soroban.png"><br>　決算
+        </div>
+    </a>
+</div>
 <br>
-<br>
-<a href="/main"><div class="waku1 clickable">戻る</div></a>
 </body>
 </html>

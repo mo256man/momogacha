@@ -5,12 +5,22 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <title>桃鉄ガチャ</title>
 </head>
-<body>
-<div class="waku1 non-clickable">決算</div><br>
+<body class="normal">
+<h1>桃鉄ガチャ</h1><br>
+<div>
+    <div style="float: left">
+        <div class="blue">{{uname}}</div>
+        <a href="/main"><div class="waku1 clickable">戻る</div></a>
+    </div>
+    <div style="text-align: center">
+        <a href="/ranking?daily=True"><div id="s1">デイリー</div></a>
+        <a href="/ranking?daily=False"><div id="s2">通期</div></a>
+    </div>
+</div>
 <br>
 {% for record in results %}
 <div class="waku_ranking non-clickable">
-<p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}</p>
+<p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}　　{{record["date"]}}</p>
 <p class="score">{{record["kanji"]}}円</p><p></p>
 <blockquote class="ranking">
 <img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">
@@ -26,28 +36,27 @@
 {% endfor %}
 <br>
 <br>
-<a href="/main"><div class="waku1 clickable">戻る</div></a>
 <script>
+window.onload = function () {
+    if (1=={{isDaily}}) {
+        $("#s1").addClass("waku1 selected");
+        $("#s2").addClass("waku1 clickable");
+    } else {
+        $("#s1").addClass("waku1 clickable");
+        $("#s2").addClass("waku1 selected");
+    }
+}
+
 function clickBtn(btn){
     const area = $("#p"+btn);
     const img =  $("#b"+btn);
 
     if (area.css("display")=="block") {
-        img.src = "static/plus.png";
+        img.attr("src", "static/plus.png");
     } else {
-        img.src = "static/minus.png";
+        img.attr("src", "static/minus.png");
     }
     area.toggle();
-
-//    const area = document.getElementById("p"+btn);
-//    const img = document.getElementById("b"+btn)
-//    if(area.style.display=="block"){
-//        area.style.display ="none";
-//        img.src="static/plus.png";
-//    }else{
-//        area.style.display ="block";
-//        img.src="static/minus.png";
-//    }
 }
 </script>
 </body>

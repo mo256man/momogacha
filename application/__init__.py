@@ -53,6 +53,13 @@ def resetScore():
         score.date = date
     db.session.commit()
 
+def refreshScore():
+    scores = db.session.query(Scores).filter(Scores.id<=0)
+    date = my_function.getStrDate()
+    for score in scores:
+        score.date = date
+    db.session.commit()
+
 def count_all_items():
     cnt = db.session.query(Items).filter(Items.id>0).count()
     return cnt
@@ -67,7 +74,7 @@ def get_last_date():
 
 def do_gacha(name, uname, isLINE):
     last_date = get_last_date()
-    today = datetime.datetime.now().strftime("%Y/%m/%d")
+    today = my_function.getStrDate()
     if today != last_date:
         resetItems()
         last_date = today
@@ -131,5 +138,20 @@ def get_scores(isDaily):
         result["table"] = items
         results.append(result)
     return results
+
+def get_rank():
+    # 参考　https://www.javaer101.com/fr/article/1022365.html
+    scores = db.session.query(Scores)
+    id = scores.order_by(Scores.id.desc()).first().id
+
+    subquery = db.session.query(Scores,
+        func.rank().over(
+            order_by = Scores.score.desc()
+#            partition_by = Scores.id
+            ).label('rnk')
+    ).subquery()
+    query = db.session.query(subquery).all()  # listになる
+    rank = [x.rnk for x in query if x.id == id][0]
+    return rank
 
 import application.views
