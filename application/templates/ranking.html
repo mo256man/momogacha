@@ -6,44 +6,41 @@
 <title>桃鉄ガチャ</title>
 </head>
 <body class="normal">
-<h1>桃鉄ガチャ</h1><br>
-<div>
-    <div style="float: left">
-        <div class="blue">{{uname}}</div>
-        <a href="/main"><div class="waku1 clickable">戻る</div></a>
+<h1>桃鉄ガチャ</h1>
+<div class="wakuback">
+    <div class="blue">{{uname}}</div>
+    <a href="/main"><div class="clickable">戻る</div></a>
+    　　<a href="/ranking?daily=True"><div id="s1">デイリー</div></a>
+    <a href="/ranking?daily=False"><div id="s2">通期</div></a>
+</div>
+<div class="wakuback" style="width: 994px;">
+  {% for record in results %}
+    <div class="waku_ranking non-clickable">
+      <p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}　　{{record["date"]}}</p>
+      <p class="score">{{record["kanji"]}}円</p><p></p>
+      <blockquote class="ranking">
+        <img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">
+        <div id="p{{loop.index}}" style="display: none;">
+          <table>
+            {% for row in record["table"] %}
+              <tr><td class="ranking item">{{row[0]}}</td><td class="ranking station">{{row[1]}}（{{row[2]}}）</td><td class="ranking kanji">{{row[3]}}</td></tr>
+            {% endfor %}
+          </table>
+        </div>
+      </blockquote>
     </div>
-    <div style="text-align: center">
-        <a href="/ranking?daily=True"><div id="s1">デイリー</div></a>
-        <a href="/ranking?daily=False"><div id="s2">通期</div></a>
-    </div>
+  {% endfor %}
 </div>
-<br>
-{% for record in results %}
-<div class="waku_ranking non-clickable">
-<p class="player">&#x1f351; {{loop.index}}位　{{record["uname"]}}　　{{record["date"]}}</p>
-<p class="score">{{record["kanji"]}}円</p><p></p>
-<blockquote class="ranking">
-<img src="/static/plus.png" id="b{{loop.index}}" onclick="clickBtn('{{loop.index}}')">
-<div id="p{{loop.index}}" style="display: none;">
-<table>
-{% for row in record["table"] %}
-<tr><td class="ranking item">{{row[0]}}</td><td class="ranking station">{{row[1]}}（{{row[2]}}）</td><td class="ranking kanji">{{row[3]}}</td></tr>
-{% endfor %}
-</table>
-</div>
-</blockquote>
-</div>
-{% endfor %}
 <br>
 <br>
 <script>
 window.onload = function () {
     if (1=={{isDaily}}) {
-        $("#s1").addClass("waku1 selected");
-        $("#s2").addClass("waku1 clickable");
+        $("#s1").addClass("selected");
+        $("#s2").addClass("clickable");
     } else {
-        $("#s1").addClass("waku1 clickable");
-        $("#s2").addClass("waku1 selected");
+        $("#s1").addClass("clickable");
+        $("#s2").addClass("selected");
     }
 }
 

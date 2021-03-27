@@ -2,26 +2,26 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <title>桃鉄ガチャ</title>
 </head>
 <body class="normal">
-<h1>桃鉄ガチャ</h1><br>
-<div>
+<h1>桃鉄ガチャ</h1>
+<div class="wakuback">
     <div style="float: left">
         <div class="blue">{{uname}}</div>
     </div>
     <div style="text-align: right">
     </div>
 </div>
-<br><br><br>
 <div class="box_parent">
-    <div class="waku1 non-clickable box_god">
+    <div class="message non-clickable" style="height: 148px;">
         <table>
         <tr><td rowspan="4"><img src="static/god.png"></td>
         <td>ゴッドカード</td</tr>
         <tr><td> 「汝に物件を３つ与えよう</td</tr>
         {% if items_left >= 3 %}
-        <tr><td>　　全{{items_cnt}}件中、残り{{items_left}}件だ」</td</tr>
+        <tr><td>　全{{items_cnt}}件中、残り{{items_left}}件だ」</td</tr>
         {% else %}
         <tr><td>　　…と思ったが、もう品切れだ」</td</tr>
         {% endif %}

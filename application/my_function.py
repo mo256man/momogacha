@@ -1,6 +1,7 @@
 import math
 import datetime
 import urllib.parse
+import application
 
 # 数値を漢字にする　面倒なので0は特別扱い
 def num2kanji(number):
@@ -45,6 +46,15 @@ def kanji2num(kanji):
 
     return number
 
+# 日付変更チェック
+def checkDate():
+    last_date = application.get_last_date()
+    today = getStrDate()
+    if today != last_date:
+        application.resetItems()
+        application.refreshScore()
+    return
+
 # 日付を文字列として取得する
 def getStrDate():
     return datetime.datetime.now().strftime("%Y/%m/%d")
@@ -55,17 +65,23 @@ def han2zen(txt):
     return txt.translate(str.maketrans({chr(0x0021 + i): chr(0xFF01 + i) for i in range(94)}))
 
 # Twitter用の文を作成する
-def get_tweet_msg(kanji, uname, result):
+def get_tweet_msg(kanji, uname, result, isLine):
     tmp = [han2zen(kanji)+"円"]
     for row in result:
         tmp.append(han2zen(row[3]))
     max_len = max(len(x) for x in tmp)
     tweet_msg = f"#桃鉄ガチャ　　{uname}\n"
-    tweet_msg += "【スコア　　"
-    tweet_msg += "　" * (max_len-len(tmp[0])) + tmp[0] + "】\n\n"
+    if isLine:
+        tweet_msg += f"【スコア　　　{kanji} 円】\n\n"
+    else:
+        tweet_msg += "【スコア　　" + "　" * (max_len-len(tmp[0])) + tmp[0] + "】\n\n"
+    
     for i in [1,2,3]:
-        tweet_msg += f"{result[i-1][0]}（{result[i-1][1]}）\n"
-        tweet_msg +=  "　" * (max_len-len(tmp[i]) + 6) + tmp[i] + "\n"
+        if isLine:
+            tweet_msg += f"{result[i-1][0]}（{result[i-1][3]}）\n"
+        else:
+            tweet_msg += f"{result[i-1][0]}（{result[i-1][1]}）\n"
+            tweet_msg +=  "　" * (max_len-len(tmp[i]) + 6) + tmp[i] + "\n"
 
     tweet_msg = urllib.parse.quote(tweet_msg)
     return tweet_msg

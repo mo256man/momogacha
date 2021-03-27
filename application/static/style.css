@@ -4,7 +4,7 @@ html {
   overflow-y: scroll;
 }
 
-body{
+body.normal{
   background: url("nihonchizu_area.png") center center / cover no-repeat fixed;
   font-family: 'Kosugi Maru', sans-serif;
   font-weight: bold;
@@ -17,24 +17,29 @@ body{
   -webkit-user-select: none;
 }
 
-body.normal{
-  background: url("nihonchizu_area.png") center center / cover no-repeat fixed;
-}
-
 body.body_kessan{
   background-color: white;
-  background: url("fujisan.png") center center / auto no-repeat fixed;
 }
 
 td.waku {
   border: 5px solid rgb(170,145,120);
   border-radius: 10px;
-  margin-right: 10px;
   color : rgb(16, 16, 16);
   padding: 2px;
   vertical-align: text-top;
   display: inline-block;
 }
+
+.wakuback {
+  text-align:center;
+  border: 5px solid rgb(170,155,130);
+  background-color: rgb(225,200,160);
+  border-radius: 10px;
+  padding: 10px;
+  margin: 3px 0px;
+  display: inline-block;
+}
+
 
 th, td{
   font-family: 'Kosugi Maru', sans-serif;
@@ -72,35 +77,63 @@ a { text-decoration: none;
   height: 150px;
 }
 
-.waku1 {
+.message {
   border: 5px solid rgb(170,145,120);
   border-radius: 10px;
-  margin-right: 10px;
   color : rgb(16, 16, 16);
-  padding: 10px;
+  padding: 20px;
+  width: 100%;
+  margin: 3px 0px;
   vertical-align: text-top;
   display: inline-block;
 }
 
-.waku2 {
-  border: 5px solid rgb(29,155,240);
-  background-color: rgb(29,155,240);
+.blue {
+  border: 5px solid rgb(10,70,160);
+  background-color: rgb(0,120,255);
+  color:white;
   border-radius: 10px;
-  margin-right: 10px;
+  padding: 20px;
+  vertical-align: text-top;
+  display: inline-block;
+}
+
+.blue>input {
+  background-color: rgb(0,90,190);
+  color:white;
+  border-radius: 10px;
+}
+
+.tweet {
+  border: 5px solid rgb(29,161,242);
+  background-color: rgb(29,161,242);
+  border-radius: 10px;
   color : rgb(242, 242, 242);
-  padding: 10px;
+  padding: 20px;
   vertical-align: text-top;
   display: inline-block;
 }
 
 .waku_ranking {
-  width: 1000px;
-  border: 5px solid rgb(170,145,120);
+  width: 980px;
+  border: 2px solid rgb(200,160,150);
   border-radius: 10px;
-  margin-right: 10px;
+  margin: 2px;
   color : rgb(16, 16, 16);
   padding: 2px;
+  margin: 3px 0px;
   vertical-align: text-top;
+  display: inline-block;
+  box-shadow: 0px 2px rgb(175,145,125);
+}
+
+.transparent {
+  border: 5px solid rgba(0,0,0,100);
+  background-color: rgba(0,0,0,0);
+  border-radius: 10px;
+  color : rgb(242, 242, 242);
+  padding: 20px;
+  vertical-align: bottom;
   display: inline-block;
 }
 
@@ -141,46 +174,31 @@ div.left {
 }
 
 div.clickable, input.clickable, td.clickable{
+  border-radius: 10px;
+  padding: 15px;
+  vertical-align: text-top;
+  display: inline-block;
   position: relative;
-  background-color: rgba(255,128,0,0.5);
+  color : rgb(215, 251, 251);
+  border: 10px solid rgb(212, 86, 134);
+  background-color: rgb(214, 139, 195);
+  border-style: outset;
 }
 
-div.clickable a{
-  position: absolute;
-  top: 0;
-  left: 0;
-  height:100%;
-  width: 100%;
-  background-color: rgba(255,128,0,0.5);
-}
 
 div.non-clickable, td.non-clickable{
   position: relative;
-  background-color: rgba(255,255,255,0.9);
+  background-color: rgba(255,255,255,0.8);
 }
 
 .selected{
-  position: relative;
-  font-size: 1.5em;
+  border: 5px solid rgb(170,145,120);
   background-color: rgb(138, 240, 55);
-  pointer-events: none;
-}
-
-.blue {
-  border: 5px solid rgb(10,70,160);
-  background-color: rgb(0,120,255);
-  color:white;
   border-radius: 10px;
-  margin-right: 10px;
-  padding: 10px;
+  color : rgb(16, 16, 16);
+  padding: 20px;
   vertical-align: text-top;
   display: inline-block;
-}
-
-.blue>input {
-  background-color: rgb(0,90,190);
-  color:white;
-  border-radius: 10px;
 }
 
 img {
@@ -203,6 +221,15 @@ img {
   margin: auto;
   max-width: 100%;
   max-height: 100%;
+}
+
+.fujisan{
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  margin: auto;
+  z-index: 0;
 }
 
 .kessan{
@@ -230,12 +257,8 @@ img {
   padding: 5px;
 }
 
-.box_god {
-  width: 100%;
-}
-
 .box_gatya {
-  width: 650px;
+  width: 600px;
   height: 150px;
 }
 
@@ -252,7 +275,7 @@ img {
   height: 100px;
   width: 100px;
   position: fixed;
-  z-index: 9;
+  z-index: 99;
 }
 
 .train {
@@ -260,7 +283,7 @@ img {
 }
 
 blockquote.ranking {
-  margin:10px 50px;
+  margin:5px 50px;
   font-size:1.8em;
 }
 
@@ -278,13 +301,13 @@ td.kanji {
 }
 
 .player {
-  margin:10px 10px;
+  margin:5px 10px;
   text-align: left;
   float: left;
 }
 
 .score {
-  margin:10px 10px;
+  margin:5px 10px;
   text-align: right;
 }
 
@@ -292,4 +315,9 @@ td.kanji {
   text-align: center;
   padding-top: 1em;
   padding-bottom: 1em;
+}
+
+img.half{
+  width: 50%;
+  height: 50%;
 }

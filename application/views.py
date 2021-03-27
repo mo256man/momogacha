@@ -51,18 +51,13 @@ def register_name():
 def menu():
     name = request.cookies.get("momoname")
     uname = name + "社長"
-    last_date = application.get_last_date()
-    today = my_function.getStrDate()
-    if today != last_date:
-        application.resetItems()
-        application.refreshScore()
+    my_function.checkDate()
     items_cnt = application.count_all_items()
     items_left = application.count_valid_items()
 
     return render_template("main.html" ,
                              uname = uname, 
-                             items_cnt = items_cnt, items_left = items_left,
-                             today = today, last_day = last_date)
+                             items_cnt = items_cnt, items_left = items_left)
 
 # アイテムを非選択状態に戻す
 @app.route("/reset_items")
@@ -88,7 +83,7 @@ def gacha():
     uname = name + "社長"
     kanji, result = application.do_gacha(name, uname, isLINE = False)
     # rank = application.get_rank()
-    tweet_msg = my_function.get_tweet_msg(kanji, uname, result)
+    tweet_msg = my_function.get_tweet_msg(kanji, uname, result, isLine=False)
     return render_template("result.html", uname = uname, result = result, score = kanji ,tw_text = tweet_msg)
 
 
@@ -105,6 +100,7 @@ def ranking():
         isDaily = 1 if request.args.get("daily") == "True" else 0
     name = request.cookies.get("momoname")
     uname = name + "社長"
+    my_function.checkDate()
     results = application.get_scores(isDaily = isDaily)
     return render_template("ranking.html", uname = uname, results = results, isDaily = isDaily)
 
@@ -147,6 +143,7 @@ def handle_message(event):
         msg = f"残り {items_left}"
 
     elif txt == "決算！":
+        my_function.checkDate()
         isDaily = random.choice([True, False])
         results = application.get_scores(isDaily = isDaily)
         payload = my_flexmsg.get_results(results, isRanking=True)
@@ -162,3 +159,7 @@ def handle_message(event):
     container_obj = FlexSendMessage.new_from_json_dict(payload)
     line_bot_api.push_message(id, messages = container_obj)
 
+# Twitterカード
+@app.route("/card")
+def card():
+    return render_template("card.html")

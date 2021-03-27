@@ -4,30 +4,36 @@
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 </head>
 <body class="body_kessan">
+<img id="fujisan" class="fujisan" src="../static/fujisan.png">
 <img id="kessan" class="kessan" src="../static/kessan.png">
-<img id="fujisan" src="../static/fujisan.png" style="margin-top: 200px;">
-<!-- 
 <div id="sodeL" class="sode"></div>
 <div id="sodeR" class="sode"></div>
--->
 <div id="train" class="train"><img src="../static/train.png"></div>
 
-
-
 <script>
-//これ、動かない
-$(document).ready(function(){
-    $("#body_kessan").click(function() {
-        window.location.href = "/ranking?daily=False";
-    });
+$(".body_kessan").click(function() {
+    window.location.href = "/ranking?daily=False";
 });
 
 let winW = window.innerWidth;
 let winH = window.innerHeight;
-let trainW = $("#train").width();
-let fujisanT = $("#fujisan").css("merginTop");
 let fujisanH = $("#fujisan").height();
-let trainH = fujisanT + fujisanH - 100;
+let fujisanW = $("#fujisan").width();
+let trainW = $("#train").width();
+let trainH = $("#train").height();
+let trainT = fujisanH - 150;
+
+$("#sodeL").css({
+    "height": fujisanH,
+    "marginLeft": -100,
+    "width" : 200
+});
+
+$("#sodeR").css({
+    "height": fujisanH,
+    "marginLeft": winW-100,
+    "width" : 200
+});
 
 $("#kessan").delay(1500).queue(function(){
     $(this).css({display:"block"}).dequeue();
@@ -47,7 +53,7 @@ $("#train").animate({t: 1},{
     duration: 5000,
     queue: false,
     step: function(t) {
-        $(this).css({marginTop: trainH + "px"});
+        $(this).css({marginTop: trainT + "px"});
         $(this).css({marginLeft: (1.2*winW*(1-t) - 1.2*(winW+trainW)*t) + "px"});
     }
 });

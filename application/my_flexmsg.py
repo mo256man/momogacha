@@ -30,26 +30,9 @@ def get_contents_score(item):
   return contents_score      
 
 def get_dict_link(name, kanji, result):
-  
-  tweet_msg = my_function.get_tweet_msg(kanji, name, result)
+  tweet_msg = my_function.get_tweet_msg(kanji, name, result, isLine=True)
   tweet_url = "https://twitter.com/intent/tweet?text=" + tweet_msg
-  """
-  dict_link = {
-    "type": "box",
-    "layout": "horizontal",
-    "contents": [{
-      "type": "text",
-      "text": "ツイート",
-      "color": "#111111",
-      "flex": 0,
-      "size": "lg",
-      "action": {
-        "type": "uri",
-        "label": "action",
-        "uri": tweet_url
-      }}]}
 
-  """
   dict_link = {
     "type": "box",
     "layout": "vertical",
@@ -66,7 +49,8 @@ def get_dict_link(name, kanji, result):
         "color": "#ffffff",
         "flex": 0,
         "offsetTop": "-2px",
-        "align": "center"
+        "align": "center",
+        "weight": "bold"
       },{
         "type": "filler"
       }],
@@ -79,12 +63,13 @@ def get_dict_link(name, kanji, result):
     },{
       "type": "filler"
       }],
-      "borderWidth": "1px",
-      "cornerRadius": "4px",
+      "borderWidth": "3px",
+      "cornerRadius": "5px",
       "spacing": "sm",
-      "borderColor": "#ffffff",
       "margin": "xxl",
-      "height": "40px"
+      "height": "40px",
+      "borderColor": "#1da1f2",
+      "backgroundColor": "#1da1f2"
     }
 
   return dict_link

@@ -2,21 +2,17 @@
 <head>
 <meta charset="utf-8">
 <link rel="stylesheet" href="/static/style.css">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <title>桃鉄ガチャ</title>
 </head>
 <body class="normal">
-<h1>桃鉄ガチャ</h1><br>
-<div>
-    <div style="float: left">
-        <div class="blue">{{uname}}</div>
-        <a href="http://twitter.com/share?text={{tw_text}}&url=https://momogacha.herokuapp.com/" rel="nofollow" target="_blank"><div class="waku2">Tweet</div></a>
-    </div>
-    <div style="text-align: right">
-    </div>
+<h1>桃鉄ガチャ</h1>
+<div class="wakuback">
+    <div class="blue">{{uname}}</div>
+    <a href="http://twitter.com/share?text={{tw_text}}&url=https://momogacha.herokuapp.com/" rel="nofollow" target="_blank"><div class="tweet">Tweet</div></a>
 </div>
-<br><br><br>
-<div class="box_parent">
-    <div class="waku1 non-clickable box_god">
+<div class="wakuback" style="width: 994px;">
+    <div class="waku_ranking non-clickable">
         <table>
             <tbody>
                 {% for row in result %}
@@ -35,15 +31,15 @@
         </table>
     </div>
 </div>
-<br>
+<br><br>
 <div class="box_parent">
     <a href="/main">
-    <div class="box_child waku1 clickable box_gatya">
+    <div class="box_child clickable box_gatya">
         <img src="static/return.png"><br>　戻る
     </div>
     </a>
     <a href="/kessan">
-        <div class="box_child waku1 clickable box_kessan">
+        <div class="box_child clickable box_kessan">
             <img src="static/soroban.png"><br>　決算
         </div>
     </a>
