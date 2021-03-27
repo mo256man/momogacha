@@ -73,10 +73,6 @@ input, button {
 a { text-decoration: none;
 }
 
-.h150 {
-  height: 150px;
-}
-
 .message {
   border: 5px solid rgb(170,145,120);
   border-radius: 10px;
@@ -128,13 +124,14 @@ a { text-decoration: none;
 }
 
 .transparent {
-  border: 5px solid rgba(0,0,0,100);
+  border: 5px solid rgba(0,0,0,0);
   background-color: rgba(0,0,0,0);
   border-radius: 10px;
   color : rgb(242, 242, 242);
   padding: 20px;
-  vertical-align: bottom;
+  margin: 3px 0px;
   display: inline-block;
+  vertical-align: bottom;
 }
 
 .cell-link {
@@ -317,7 +314,24 @@ td.kanji {
   padding-bottom: 1em;
 }
 
-img.half{
-  width: 50%;
-  height: 50%;
+div.mo {
+  position: absolute;
+  top: 10px;
+  right: 30px;  
 }
+
+img.mo{
+  height: 32px;
+  width: 24px;
+}
+
+table.omake {
+  border-collapse: separate;
+  border-spacing: 8px;
+  border: 1px
+}
+  
+table.omake tr td {
+  vertical-align: top;
+  padding:5px 10px;
+}  

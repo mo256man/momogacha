@@ -46,6 +46,7 @@ def kanji2num(kanji):
 
     return number
 
+
 # 日付変更チェック
 def checkDate():
     last_date = application.get_last_date()
@@ -55,14 +56,22 @@ def checkDate():
         application.refreshScore()
     return
 
+
 # 日付を文字列として取得する
 def getStrDate():
     return datetime.datetime.now().strftime("%Y/%m/%d")
+
+
+# 時刻を文字列として取得する
+def getStrTime():
+    return datetime.datetime.now().strftime("%H:%M:%S")
+
 
 # 半角数字を全角にする力業
 # 参考　https://qiita.com/YuukiMiyoshi/items/6ce77bf402a29a99f1bf
 def han2zen(txt):
     return txt.translate(str.maketrans({chr(0x0021 + i): chr(0xFF01 + i) for i in range(94)}))
+
 
 # Twitter用の文を作成する
 def get_tweet_msg(kanji, uname, result, isLine):

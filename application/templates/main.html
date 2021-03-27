@@ -15,17 +15,18 @@
     </div>
 </div>
 <div class="box_parent">
-    <div class="message non-clickable" style="height: 148px;">
+    <div class="message non-clickable" style="height: 150px;">
         <table>
         <tr><td rowspan="4"><img src="static/god.png"></td>
-        <td>ゴッドカード</td</tr>
-        <tr><td> 「汝に物件を３つ与えよう</td</tr>
+        <td>ゴッドカード</td></tr>
         {% if items_left >= 3 %}
-        <tr><td>　全{{items_cnt}}件中、残り{{items_left}}件だ」</td</tr>
+        <tr><td> 「汝に物件を３つ与えよう」</td></tr>
+        <tr><td></td></tr>
         {% else %}
-        <tr><td>　　…と思ったが、もう品切れだ」</td</tr>
+        <tr><td> 「汝に物件を３つ与えよう</td></tr>
+        <tr><td>　　…と思ったが、もう品切れだ」</td></tr>
         {% endif %}
-        <tr><td class="sum_dummy">　</td</tr>
+        <tr><td class="sum_dummy">　</td></tr>
         </table>
     </div>
 </div>
@@ -53,8 +54,6 @@
     </a>
 </div>
 <br>
-<a href="/reset_items"><div class="waku1 clickable">物件リセット</div></a><br>
-<a href="/reset_score"><div class="waku1 clickable">ランキングリセット</div></a><br>
 <br>
 </body>
 </html>

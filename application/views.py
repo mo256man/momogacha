@@ -6,7 +6,6 @@ import application
 from application import app, db
 import application.my_function as my_function
 import application.my_flexmsg as my_flexmsg
-import application.my_line as my_line
 
 from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
@@ -104,10 +103,17 @@ def ranking():
     results = application.get_scores(isDaily = isDaily)
     return render_template("ranking.html", uname = uname, results = results, isDaily = isDaily)
 
+
+# おまけ
+@app.route("/omake")
+def omake():
+    return render_template("omake.html")
+
 # LINEのプロファイルを取得する
 def get_profile(self, user_id, timeout = None):
     response = self._get("/v2/bot/profile/{user_id}".format(user_id = user_id), timeout = timeout)
     return Profile.new_from_json_dict(response.json)
+
 
 # LINEコールバック
 @app.route("/callback", methods = ['POST'])
@@ -122,6 +128,7 @@ def callback():
         print("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
     return 'OK'
+
 
 # LINEでコマンドを受ける
 @handler.add(MessageEvent, message = TextMessage)
@@ -138,8 +145,6 @@ def handle_message(event):
         else:
             kanji, result = application.do_gacha(name, uname, isLINE = True)
             payload = my_flexmsg.get_result(uname, kanji, result, isRanking=False)
-            
-            rank = application.get_rank()
         msg = f"残り {items_left}"
 
     elif txt == "決算！":
@@ -158,8 +163,3 @@ def handle_message(event):
   
     container_obj = FlexSendMessage.new_from_json_dict(payload)
     line_bot_api.push_message(id, messages = container_obj)
-
-# Twitterカード
-@app.route("/card")
-def card():
-    return render_template("card.html")

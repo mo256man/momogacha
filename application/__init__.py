@@ -32,12 +32,12 @@ class Scores(db.Model):
     item2 = db.Column(db.Integer)
     item3 = db.Column(db.Integer)
     date = db.Column(db.String)
+    time = db.Column(db.String)
 
 def resetItems():
     items = db.session.query(Items)
-    # items.filter(Items.done==1).done = 0
-    # items.filter(Items.id<0).done = 0
     items_done =  items.filter(Items.done==1).all()
+    # sqliteはwhere条件で一気に更新はできない？
     for item in items_done:
         item.done = 0
     items_example = items.filter(Items.id<0).all()
@@ -75,6 +75,7 @@ def get_last_date():
 def do_gacha(name, uname, isLINE):
     last_date = get_last_date()
     today = my_function.getStrDate()
+    time = my_function.getStrTime()
     if today != last_date:
         resetItems()
         last_date = today
@@ -107,6 +108,7 @@ def do_gacha(name, uname, isLINE):
     dict["item2"] = ids[1]
     dict["item3"] = ids[2]
     dict["date"] = today
+    dict["time"] = time
     db.session.execute(Scores.__table__.insert(), [dict])
     db.session.commit()
     return kanji, result
@@ -130,6 +132,7 @@ def get_scores(isDaily):
         result["name"] = data.name
         result["uname"] = data.uname
         result["date"] = data.date
+        result["time"] = data.time
         result["kanji"] = my_function.num2kanji(data.score)
         items = []        
         for id in [data.item1, data.item2, data.item3]:
