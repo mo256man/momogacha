@@ -1,4 +1,4 @@
-from flask import request, redirect, url_for, render_template, flash
+from flask import request, redirect, url_for, render_template, flash, send_file
 from flask import make_response, send_from_directory
 from sqlalchemy.sql.expression import func
 
@@ -58,16 +58,22 @@ def menu():
                              uname = uname, 
                              items_cnt = items_cnt, items_left = items_left)
 
-# アイテムを非選択状態に戻す
+# アイテムを非選択状態に戻す（管理者専用）
 @app.route("/reset_items")
 def reset_items():
     application.resetItems()
     return redirect(url_for("menu"))
 
-# ランキングを初期化する
+# ランキングを初期化する（管理者専用）
 @app.route("/reset_score")
 def reset_score():
     application.resetScore()
+    return redirect(url_for("menu"))
+
+# デイリーランキングのためのデモスコアの日付を今日にする（管理者専用）
+@app.route("/refresh_score")
+def refresh_score():
+    application.refreshScore()
     return redirect(url_for("menu"))
 
 # ダイスを振る（デモ）
@@ -108,6 +114,26 @@ def ranking():
 @app.route("/omake")
 def omake():
     return render_template("omake.html")
+
+
+# 管理人用
+@app.route("/morishiman")
+def morishiman():
+    name = request.cookies.get("momoname")
+    uname = name + "社長"
+    my_function.checkDate()
+    items_cnt = application.count_all_items()
+    items_left = application.count_valid_items()
+    return render_template("morishiman.html" ,
+                             uname = uname, 
+                             items_cnt = items_cnt, items_left = items_left)
+
+
+# スコアデータのダウンロード
+@app.route("/output_score")
+def output_score():
+    filename = application.downloadCSV()
+    return send_file(f"static/{filename}", as_attachment = True)
 
 # LINEのプロファイルを取得する
 def get_profile(self, user_id, timeout = None):

@@ -40,21 +40,23 @@
     </div>
     </a>
     {% else %}
-    <div class="box_child sorry non-clickable box_gatya" style="height: 180px;">
+    <div class="box_child sorry non-clickable box_gatya">
         <img src="static/ekiin.png"><br>
         　品切れです<br>
-        　明日になれば<br>
-        　リセットされます<br>
+        　明日になればリセットされます<br>
     </div>
     {% endif %}
 
-    <a href="/kessan">
+    <a href="/ranking">
         <div class="box_child clickable box_kessan">
             <img src="static/soroban.png"><br>　決算
         </div>
     </a>
 </div>
 <br>
-<br>
+<a href="/reset_items" ><div class="waku clickable">物件リセット</div></a><br>
+<a href="/reset_score" ><div class="waku clickable">ランキングリセット</div></a><br>
+<a href="/refresh_score" ><div class="waku clickable">デモランキングの日付を今日にする</div></a><br>
+<a href="/output_score" ><div class="waku clickable">ランキング出力</div></a><br>
 </body>
 </html>

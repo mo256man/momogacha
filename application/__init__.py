@@ -5,7 +5,10 @@ from sqlalchemy import create_engine
 from sqlalchemy.sql.expression import func
 from sqlalchemy import desc
 
+import os
 import datetime
+import pandas as pd
+import pandas.io.sql as psql
 import application.my_function as my_function
 
 app = Flask(__name__)
@@ -34,6 +37,7 @@ class Scores(db.Model):
     date = db.Column(db.String)
     time = db.Column(db.String)
 
+# アイテムを非選択状態に戻す
 def resetItems():
     items = db.session.query(Items)
     items_done =  items.filter(Items.done==1).all()
@@ -45,6 +49,7 @@ def resetItems():
         item.done = 1
     db.session.commit()
 
+# ランキングを初期化する
 def resetScore():
     db.session.query(Scores).filter(Scores.id>0).delete()
     date = my_function.getStrDate()
@@ -157,4 +162,13 @@ def get_rank():
     rank = [x.rnk for x in query if x.id == id][0]
     return rank
 
+def downloadCSV():
+    time = my_function.getStrTime()
+    print (time)
+    filename = f"momo_score_{time}.csv"
+    os.chdir("application/static/")
+    df = pd.read_sql(db.session.query(Scores).statement,db.session.bind)
+    df.to_csv(filename, index=False, sep=",", encoding="utf_8_sig", mode="w")
+    return filename
+    
 import application.views
