@@ -74,7 +74,10 @@ def get_dict_link(name, kanji, result):
 
   return dict_link
 
-def get_dict_body(name, kanji, item_list, isRanking):
+def get_dict_body(name, kanji, item_list, isRanking, i):
+  if isRanking:
+    name = f"{i+1}位　{name}"
+
   dict_name = {
     "type": "text",
     "text": name,
@@ -132,7 +135,7 @@ def get_dict_body(name, kanji, item_list, isRanking):
 
 
 def get_result(name, score, item_list, isRanking):
-  dict_body = get_dict_body(name, score, item_list, isRanking)    
+  dict_body = get_dict_body(name, score, item_list, isRanking, i)    
   payload = {
     "type": "flex",
     "altText": "Flex Message",
@@ -145,8 +148,8 @@ def get_result(name, score, item_list, isRanking):
 
 def get_results(results, isRanking):
   dict_bodies = []    
-  for result in results:
-    dict_body = get_dict_body(result["uname"], result["kanji"], result["table"], isRanking)
+  for i, result in enumerate(results):
+    dict_body = get_dict_body(result["uname"], result["kanji"], result["table"], isRanking, i)
     dict_bodies.append(dict_body)
   payload = {
     "type": "flex",
