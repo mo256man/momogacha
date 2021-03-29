@@ -186,9 +186,11 @@ div.clickable, input.clickable, td.clickable{
   vertical-align: text-top;
   display: inline-block;
   position: relative;
-  color : rgb(215, 251, 251);
-  border: 10px solid rgb(212, 86, 134);
-  background-color: rgb(214, 139, 195);
+  color : rgb(20, 20, 20);
+  background: linear-gradient(white, #ff8888);
+  background: -moz-linear-gradient(white, #ff8888); 
+  background: -webkit-linear-gradient(white, #ff8888); 
+  border: 10px solid rgb(255, 136, 136);
   border-style: outset;
 }
 

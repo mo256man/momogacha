@@ -1,5 +1,6 @@
 import math
 import datetime
+import pytz
 import urllib.parse
 import application
 
@@ -59,12 +60,14 @@ def checkDate():
 
 # 日付を文字列として取得する
 def getStrDate():
-    return datetime.datetime.now().strftime("%Y/%m/%d")
+    jst = pytz.timezone("Asia/Tokyo")
+    return datetime.datetime.now(jst).strftime("%Y/%m/%d")
 
 
 # 時刻を文字列として取得する
 def getStrTime():
-    return datetime.datetime.now().strftime("%H:%M:%S")
+    jst = pytz.timezone("Asia/Tokyo")
+    return datetime.datetime.now(jst).strftime("%H:%M:%S")
 
 
 # 半角数字を全角にする力業

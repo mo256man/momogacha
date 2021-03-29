@@ -41,13 +41,13 @@ def register_name():
         name = request.form["name"]
     else:
         redirext = 0
-    response = redirect(url_for("menu"))
+    response = redirect(url_for("main"))
     response.set_cookie(key = "momoname", value = name)
     return response
 
 # メイン
 @app.route("/main")
-def menu():
+def main():
     name = request.cookies.get("momoname")
     uname = name + "社長"
     my_function.checkDate()
@@ -62,13 +62,13 @@ def menu():
 @app.route("/reset_items")
 def reset_items():
     application.resetItems()
-    return redirect(url_for("menu"))
+    return redirect(url_for("main"))
 
 # ランキングを初期化する（管理者専用）
 @app.route("/reset_score")
 def reset_score():
     application.resetScore()
-    return redirect(url_for("menu"))
+    return redirect(url_for("main"))
 
 # デイリーランキングのためのデモスコアの日付を今日にする（管理者専用）
 @app.route("/refresh_score")
