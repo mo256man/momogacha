@@ -171,7 +171,8 @@ def handle_message(event):
         else:
             kanji, result = application.do_gacha(name, uname, isLINE = True)
             payload = my_flexmsg.get_result(uname, kanji, result, isRanking=False)
-        msg = f"残り {items_left}"
+        # msg = f"残り {items_left}"
+        msg = ""
 
     elif txt == "決算！":
         my_function.checkDate()
