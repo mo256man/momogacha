@@ -35,14 +35,11 @@ def title():
 def register_name():
     name = request.cookies.get("momoname")
     if request.method == "POST":
-        redirext = 1
-        max_age = 60 * 60 * 24 * 7 # 7 days
-        expires = int(datetime.datetime.now().timestamp()) + max_age
         name = request.form["name"]
-    else:
-        redirext = 0
+    max_age = 60 * 60 * 24 * 7 # 7 days
+    expires = int(datetime.datetime.now().timestamp()) + max_age
     response = redirect(url_for("main"))
-    response.set_cookie(key = "momoname", value = name)
+    response.set_cookie(key = "momoname", value = name, max_age=max_age, expires=expires)
     return response
 
 # メイン
