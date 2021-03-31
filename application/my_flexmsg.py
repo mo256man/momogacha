@@ -135,7 +135,7 @@ def get_dict_body(name, kanji, item_list, isRanking, i):
 
 
 def get_result(name, score, item_list, isRanking):
-  dict_body = get_dict_body(name, score, item_list, isRanking, 0)    
+  dict_body = get_dict_body(name, score, item_list, isRanking, 1)
   payload = {
     "type": "flex",
     "altText": "Flex Message",
